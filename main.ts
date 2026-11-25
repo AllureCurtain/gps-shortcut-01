@@ -22,6 +22,13 @@ if (ENTRY.length > MAX_CHARS || ENTRY.trim().length === 0) {
   process.exit(1);
 }
 
+// The brief wants one line of plain text: a stray line break inside the
+// entry would hand the judge two lines, so refuse that too.
+if (/[\r\n]/.test(ENTRY)) {
+  console.error("entry must be a single line, no line breaks allowed");
+  process.exit(1);
+}
+
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", ENTRY + "\n", "utf8");
 
